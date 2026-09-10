@@ -1,3 +1,4 @@
+import uuid
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
@@ -43,8 +44,9 @@ def get_auth_token():
 
 def test_create_and_get_service():
     token = get_auth_token()
+    unique_slug = f"test-service-{uuid.uuid4().hex[:6]}"
     payload = {
-        "slug": "test-service",
+        "slug": unique_slug,
         "category": "Test Category",
         "name_en": "Test Service EN",
         "name_ml": "ടെസ്റ്റ് സേവനം",
@@ -64,7 +66,7 @@ def test_create_and_get_service():
     )
     assert create_res.status_code == 201
     data = create_res.json()
-    assert data["slug"] == "test-service"
+    assert data["slug"] == unique_slug
     assert len(data["documents"]) == 1
 
     get_res = client.get(f"{settings.API_V1_STR}/services/{data['id']}")
