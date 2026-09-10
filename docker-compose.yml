@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: janaseva_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: janaseva_user
+      POSTGRES_PASSWORD: janaseva_password
+      POSTGRES_DB: janaseva_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U janaseva_user -d janaseva_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: janaseva_redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: janaseva_backend
+    restart: always
+    environment:
+      DATABASE_URL: postgresql://janaseva_user:janaseva_password@postgres:5432/janaseva_db
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY: janaseva-super-secret-key-production-32bytes!
+      WHATSAPP_TOKEN: ${WHATSAPP_TOKEN:-mock_whatsapp_token}
+      WHATSAPP_PHONE_NUMBER_ID: ${WHATSAPP_PHONE_NUMBER_ID:-mock_phone_number_id}
+      WHATSAPP_VERIFY_TOKEN: ${WHATSAPP_VERIFY_TOKEN:-janaseva_verify_token}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      FIRST_ADMIN_USERNAME: admin
+      FIRST_ADMIN_PASSWORD: janaseva123!
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: janaseva_frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
