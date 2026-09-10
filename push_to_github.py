@@ -4,7 +4,7 @@ import httpx
 import sys
 
 GITHUB_REPO = "joelcabraham06/JanaSeva-App"
-PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__)) if '__file__' in globals() else os.getcwd()
 
 IGNORE_DIRS = {
     ".git", "__pycache__", "node_modules", ".pytest_cache", 
@@ -44,7 +44,7 @@ def upload_to_github(pat_token):
     }
     
     files = get_all_files()
-    print(f"Found {len(files)} files to upload to https://github.com/{GITHUB_REPO}...")
+    print(f"Found {len(files)} files to upload to https://github.com/{GITHUB_REPO}...", flush=True)
     
     success_count = 0
     fail_count = 0
@@ -53,11 +53,11 @@ def upload_to_github(pat_token):
         # Check repo access
         repo_res = client.get(f"https://api.github.com/repos/{GITHUB_REPO}", headers=headers)
         if repo_res.status_code != 200:
-            print(f"Error accessing repo {GITHUB_REPO}: {repo_res.status_code} - {repo_res.text}")
+            print(f"Error accessing repo {GITHUB_REPO}: {repo_res.status_code} - {repo_res.text}", flush=True)
             return False
             
         real_repo = repo_res.json().get("full_name", GITHUB_REPO)
-        print(f"Connected to repo {real_repo} successfully!")
+        print(f"Connected to repo {real_repo} successfully!", flush=True)
         
         for full_path, rel_path in files:
             try:
@@ -83,19 +83,19 @@ def upload_to_github(pat_token):
                     
                 put_res = client.put(url, headers=headers, json=payload)
                 if put_res.status_code in (200, 201):
-                    print(f"[OK] Uploaded: {rel_path}")
+                    print(f"[OK] Uploaded: {rel_path}", flush=True)
                     success_count += 1
                 else:
-                    print(f"[FAIL] Failed: {rel_path} ({put_res.status_code}: {put_res.text})")
+                    print(f"[FAIL] Failed: {rel_path} ({put_res.status_code}: {put_res.text})", flush=True)
                     fail_count += 1
             except Exception as e:
-                print(f"[FAIL] Error uploading {rel_path}: {e}")
+                print(f"[FAIL] Error uploading {rel_path}: {e}", flush=True)
                 fail_count += 1
                 
-    print(f"\n==========================================")
-    print(f"Upload Complete! {success_count} succeeded, {fail_count} failed.")
-    print(f"Repository: https://github.com/{real_repo}")
-    print(f"==========================================\n")
+    print(f"\n==========================================", flush=True)
+    print(f"Upload Complete! {success_count} succeeded, {fail_count} failed.", flush=True)
+    print(f"Repository: https://github.com/{real_repo}", flush=True)
+    print(f"==========================================\n", flush=True)
     return fail_count == 0
 
 if __name__ == "__main__":
