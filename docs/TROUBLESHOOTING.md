@@ -1,4 +1,4 @@
-# 🛠️ Troubleshooting & Diagnostics Guide
+# ️ Troubleshooting & Diagnostics Guide
 
 ## Common Issues & Solutions
 
