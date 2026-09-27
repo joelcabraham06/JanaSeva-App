@@ -1,4 +1,4 @@
-# 📖 Non-Technical Admin Guide
+# Non-Technical Admin Guide
 
 Janaseva provides a simple React Web Dashboard for managing government service records without writing code.
 
