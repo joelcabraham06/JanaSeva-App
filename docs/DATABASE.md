@@ -1,4 +1,4 @@
-# 🗄️ Database Schema Documentation
+# ️ Database Schema Documentation
 
 ## Database Overview
 Janaseva uses PostgreSQL (or SQLite in local dev) with SQLAlchemy ORM.
