@@ -10,7 +10,7 @@ print(f"==========================================\n", flush=True)
 
 # Keep process alive
 try:
-    while True:
-        time.sleep(1)
+ while True:
+ time.sleep(1)
 except KeyboardInterrupt:
-    ngrok.disconnect(public_url)
+ ngrok.disconnect(public_url)
