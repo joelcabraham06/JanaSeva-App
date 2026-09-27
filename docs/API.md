@@ -1,4 +1,4 @@
-# 🔌 API & Webhook Specification
+# API & Webhook Specification
 
 Interactive OpenAPI Swagger UI is available at `/docs` when the backend is running.
 
