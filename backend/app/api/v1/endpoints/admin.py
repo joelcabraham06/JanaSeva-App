@@ -10,10 +10,10 @@ router = APIRouter()
 
 @router.get("/audit-logs")
 def get_audit_logs(
-    skip: int = 0,
-    limit: int = 50,
-    db: Session = Depends(get_db),
-    current_admin: AdminUser = Depends(get_current_admin)
+ skip: int = 0,
+ limit: int = 50,
+ db: Session = Depends(get_db),
+ current_admin: AdminUser = Depends(get_current_admin)
 ):
-    logs = db.query(AuditLog).order_by(AuditLog.timestamp.desc()).offset(skip).limit(limit).all()
-    return logs
+ logs = db.query(AuditLog).order_by(AuditLog.timestamp.desc()).offset(skip).limit(limit).all()
+ return logs
