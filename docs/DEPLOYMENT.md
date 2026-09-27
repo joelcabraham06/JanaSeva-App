@@ -1,4 +1,4 @@
-# 🚀 Production Deployment Guide
+# Production Deployment Guide
 
 ## Prerequisites
 - Server with Docker & Docker Compose installed.
@@ -24,6 +24,6 @@ docker-compose up -d --build
 ## Step 3: Configure Meta Webhook
 1. Go to [Meta Developer Portal](https://developers.facebook.com/).
 2. Under WhatsApp -> Configuration -> Webhook:
-   - **Callback URL**: `https://yourdomain.com/api/v1/webhook/whatsapp`
-   - **Verify Token**: `janaseva_verify_token` (matches `.env`)
+- **Callback URL**: `https://yourdomain.com/api/v1/webhook/whatsapp`
+- **Verify Token**: `janaseva_verify_token` (matches `.env`)
 3. Subscribe to `messages`.
